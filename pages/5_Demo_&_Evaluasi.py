@@ -2,95 +2,150 @@
 import streamlit as st
 import time
 import os
-from utils import load_text_file # Impor fungsi untuk membaca file teks
+import re
+import pandas as pd
+from utils import load_text_file
+
+# --- FUNGSI BANTU UNTUK PARSING LAPORAN LDA ---
+def parse_lda_report(report_text):
+    """
+    Mem-parsing teks laporan LDA untuk mengekstrak informasi kunci.
+    """
+    if not report_text or "File tidak ditemukan" in report_text:
+        return {}
+
+    results = {}
+    try:
+        coherence_match = re.search(r"Skor Koherensi \(C_v\) Tertinggi: ([\d.]+)", report_text)
+        if coherence_match:
+            results['coherence_score'] = float(coherence_match.group(1))
+
+        topics_match = re.search(r"Jumlah Topik Optimal: (\d+)", report_text)
+        if topics_match:
+            results['optimal_topics'] = int(topics_match.group(1))
+
+        alpha_match = re.search(r"- Alpha: ([\d\w.]+)", report_text)
+        if alpha_match:
+            results['alpha'] = alpha_match.group(1)
+        
+        eta_match = re.search(r"- Eta: ([\d\w.]+)", report_text)
+        if eta_match:
+            results['eta'] = eta_match.group(1)
+
+        topics_keywords_raw = re.search(r"Topik yang ditemukan oleh model terbaik \(hanya keywords\):([\s\S]*)Topik yang ditemukan \(dengan format asli", report_text)
+        if topics_keywords_raw:
+            topics_list = topics_keywords_raw.group(1).strip().split('\n')
+            topics_dict = {}
+            for line in topics_list:
+                if ': ' in line:
+                    parts = line.split(': ')
+                    topic_name = parts[0].strip()
+                    keywords = [kw.strip() for kw in parts[1].split(',')]
+                    topics_dict[topic_name] = keywords
+            results['topics'] = topics_dict
+    except Exception as e:
+        st.error(f"Gagal mem-parsing laporan LDA: {e}")
+    
+    return results
 
 # --- KONFIGURASI HALAMAN ---
 st.set_page_config(
-    page_title="Demo & Evaluasi",
+    page_title="Evaluasi & Analisis",
     page_icon="🚀",
     layout="wide"
 )
 
 # --- JUDUL DAN DESKRIPSI ---
-st.title("🚀 Demo Interaktif & Evaluasi Kinerja Model")
-st.markdown("Coba model analisis sentimen secara langsung dan lihat metrik kinerjanya berdasarkan laporan pelatihan.")
+st.title("🚀 Evaluasi Kinerja & Analisis Model")
+st.markdown("Halaman ini berisi evaluasi untuk model klasifikasi sentimen dan hasil dari pemodelan topik (LDA).")
 st.markdown("---")
 
-# --- MEMUAT LAPORAN DARI FILE ---
-# Path ke direktori laporan
+# --- MEMUAT SEMUA LAPORAN DARI FILE ---
 REPORTS_DIR = "assets/reports"
 report_sebelum = load_text_file(os.path.join(REPORTS_DIR, "report_sebelum.txt"))
 report_sesudah = load_text_file(os.path.join(REPORTS_DIR, "report_sesudah.txt"))
 log_sebelum = load_text_file(os.path.join(REPORTS_DIR, "training_log_sebelum.txt"))
 log_sesudah = load_text_file(os.path.join(REPORTS_DIR, "training_log_sesudah.txt"))
+lda_report_full = load_text_file(os.path.join(REPORTS_DIR, "lda_report.txt"))
 
-# --- KONTEN HALAMAN ---
+# ==============================================================================
+# BAGIAN EVALUASI MODEL KLASIFIKASI SENTIMEN
+# ==============================================================================
+st.header("Evaluasi Model Klasifikasi Sentimen")
+
 col1, col2 = st.columns(2)
 
-# --- KOLOM MODEL SEBELUM ---
 with col1:
     st.subheader("📉 Model Sebelum: LSTM Sederhana")
     image_path_before = "assets/image_6737bc.png"
     if os.path.exists(image_path_before):
-        # --- PERBAIKAN DI SINI ---
         st.image(image_path_before, caption="Confusion Matrix Model Dasar", use_container_width=True)
     else:
         st.warning(f"File gambar tidak ditemukan: '{image_path_before}'.")
-
     st.metric("Akurasi", "67.5%", delta="-16.6%", delta_color="inverse")
-    st.metric("F1-Score (Macro)", "26.9%", delta="-46.6%", delta_color="inverse")
-
-    with st.expander("Lihat Detail Analisis Lengkap (dari file)"):
-        st.warning("**Kelemahan Model:**")
-        st.markdown("""
-        - **Gagal Total:** Model ini sama sekali tidak bisa memprediksi sentimen 'Negatif' dan 'Netral', seperti yang terlihat dari nilai *precision*, *recall*, dan *f1-score* yang nol.
-        - **Tidak Seimbang:** Akurasi 67.5% hanya mencerminkan kemampuan model menebak kelas mayoritas ('Positif'), bukan kemampuan klasifikasi yang sebenarnya.
-        """)
-        st.markdown("---")
-        st.markdown("##### Laporan Klasifikasi Lengkap")
+    with st.expander("Lihat Detail Analisis (Model Sebelum)"):
         st.code(report_sebelum, language='text')
-        st.markdown("##### Riwayat Pelatihan (Epochs)")
         st.code(log_sebelum, language='text')
 
-
-# --- KOLOM MODEL SESUDAH ---
 with col2:
     st.subheader("📈 Model Sesudah: Stacked Bi-LSTM")
     image_path_after = "assets/image_673b45.png"
     if os.path.exists(image_path_after):
-        # --- PERBAIKAN DI SINI ---
         st.image(image_path_after, caption="Confusion Matrix Model Optimal", use_container_width=True)
     else:
         st.warning(f"File gambar tidak ditemukan: '{image_path_after}'.")
-
     st.metric("Akurasi", "84.1%", delta="16.6%")
-    st.metric("F1-Score (Macro)", "73.5%", delta="46.6%")
-    
-    with st.expander("Lihat Detail Analisis Lengkap (dari file)"):
-        st.success("**Peningkatan Signifikan:**")
-        st.markdown("""
-        - **Mampu Mengklasifikasi:** Model berhasil memprediksi ketiga kelas sentimen dengan cukup baik, terutama untuk kelas 'Negatif' dan 'Positif'.
-        - **Penanganan Kelas Minoritas:** Meskipun kelas 'Netral' masih menjadi tantangan (*f1-score* 50.8%), model ini menunjukkan peningkatan besar dari nol.
-        - **Arsitektur Efektif:** Penggunaan `Bidirectional LSTM` dan `class_weight` terbukti efektif menangkap pola yang lebih kompleks dalam data.
-        - **Early Stopping:** Pelatihan berhenti di epoch ke-7, mencegah *overfitting* dan menghemat waktu komputasi.
-        """)
-        st.markdown("---")
-        st.markdown("##### Laporan Klasifikasi Lengkap")
+    with st.expander("Lihat Detail Analisis (Model Sesudah)"):
         st.code(report_sesudah, language='text')
-        st.markdown("##### Riwayat Pelatihan (Epochs)")
         st.code(log_sesudah, language='text')
 
 st.markdown("---")
-st.info("💡 **Demo Interaktif:** Coba masukkan kalimat ulasan di bawah untuk melihat bagaimana model idealnya akan bekerja.")
 
-# --- DEMO INTERAKTIF ---
-user_input = st.text_area("Masukkan teks ulasan di sini:", "Kualitas kameranya bagus sekali, tapi daya tahan baterainya kurang memuaskan.", height=100)
+# ==============================================================================
+# BAGIAN ANALISIS PEMODELAN TOPIK (LDA)
+# ==============================================================================
+st.header("Analisis Pemodelan Topik (LDA)")
 
-if st.button("Analisis Sentimen!"):
-    if user_input:
-        with st.spinner('Menganalisis...'):
-            time.sleep(1) # Simulasi
-        st.success("**Prediksi Sentimen: Positif** (dengan topik Negatif terdeteksi)")
-        st.balloons()
+lda_results = parse_lda_report(lda_report_full)
+
+if not lda_results:
+    st.error("File laporan `reports/lda_report.txt` tidak ditemukan atau gagal diparsing.")
+    st.stop()
+
+col1_lda, col2_lda, col3_lda = st.columns(3)
+col1_lda.metric("Jumlah Topik Optimal", lda_results.get('optimal_topics', 'N/A'))
+col2_lda.metric("Skor Koherensi (C_v)", f"{lda_results.get('coherence_score', 0):.4f}")
+col3_lda.metric("Hyperparameter (α / η)", f"{lda_results.get('alpha', 'N/A')} / {lda_results.get('eta', 'N/A')}")
+
+tab1, tab2, tab3 = st.tabs(["Visualisasi LDA (pyLDAvis)", "Detail Topik & Kata Kunci", "Log Proses"])
+
+with tab1:
+    st.subheader("Visualisasi Interaktif Model Topik")
+    
+    # --- PERBAIKAN DI SINI ---
+    # Kode sekarang akan secara otomatis memuat dan menampilkan file HTML Anda
+    vis_html_path = "assets/lda_visualization.html"
+    if os.path.exists(vis_html_path):
+        with open(vis_html_path, 'r', encoding='utf-8') as f:
+            html_string = f.read()
+        st.components.v1.html(html_string, width=1300, height=800, scrolling=True)
+        st.success("Visualisasi LDA berhasil dimuat dari `assets/lda_visualization.html`!")
     else:
-        st.warning("Silakan masukkan teks ulasan terlebih dahulu.")
+        st.warning(f"File visualisasi tidak ditemukan di `{vis_html_path}`.")
+        st.info("Pastikan Anda sudah menyimpan file HTML dari pyLDAvis ke dalam folder `assets` Anda.")
+        st.image("https://raw.githubusercontent.com/bmabey/pyLDAvis/master/notebooks/pyLDAvis_example.png",
+                 caption="Contoh visualisasi pyLDAvis. File Anda akan ditampilkan di sini.")
+
+with tab2:
+    st.subheader("Rincian Topik yang Ditemukan")
+    if 'topics' in lda_results:
+        for topic_name, keywords in lda_results['topics'].items():
+            st.markdown(f"**{topic_name}**")
+            st.text(", ".join(keywords))
+            st.markdown("---")
+    else:
+        st.warning("Tidak dapat menampilkan detail topik dari laporan.")
+
+with tab3:
+    st.subheader("Log Lengkap Proses Pemodelan LDA")
+    st.code(lda_report_full, language="text")
