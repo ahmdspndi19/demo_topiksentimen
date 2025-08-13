@@ -1,0 +1,10 @@
+>>> LAPORAN KLASIFIKASI (Stacked LSTM):
+              precision    recall  f1-score   support
+
+     Negatif     0.7708    0.8084    0.7891       287
+      Netral     0.4016    0.6901    0.5078        71
+     Positif     0.9513    0.8679    0.9077       742
+
+    accuracy                         0.8409      1100
+   macro avg     0.7079    0.7888    0.7349      1100
+weighted avg     0.8687    0.8409    0.8509      1100

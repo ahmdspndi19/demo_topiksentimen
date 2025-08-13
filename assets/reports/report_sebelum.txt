@@ -1,0 +1,10 @@
+>>> LAPORAN KLASIFIKASI (SEBELUM):
+              precision    recall  f1-score   support
+
+     Negatif     0.0000    0.0000    0.0000       287
+      Netral     0.0000    0.0000    0.0000        70
+     Positif     0.6752    1.0000    0.8061       742
+
+    accuracy                         0.6752      1099
+   macro avg     0.2251    0.3333    0.2687      1099
+weighted avg     0.4558    0.6752    0.5442      1099
