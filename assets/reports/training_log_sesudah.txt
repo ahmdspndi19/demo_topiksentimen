@@ -1,0 +1,15 @@
+42/42 ━━━━━━━━━━━━━━━━━━━━ 19s 320ms/step - accuracy: 0.4591 - loss: 1.0818 - val_accuracy: 0.7734 - val_loss: 0.9501
+Epoch 2/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 13s 302ms/step - accuracy: 0.8032 - loss: 0.9108 - val_accuracy: 0.7583 - val_loss: 0.5956
+Epoch 3/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 13s 301ms/step - accuracy: 0.8161 - loss: 0.5798 - val_accuracy: 0.8066 - val_loss: 0.4448
+Epoch 4/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 20s 283ms/step - accuracy: 0.8377 - loss: 0.4697 - val_accuracy: 0.8656 - val_loss: 0.3454
+Epoch 5/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 21s 300ms/step - accuracy: 0.9219 - loss: 0.3283 - val_accuracy: 0.8429 - val_loss: 0.3632
+Epoch 6/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 21s 305ms/step - accuracy: 0.9275 - loss: 0.2432 - val_accuracy: 0.8580 - val_loss: 0.3885
+Epoch 7/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 20s 303ms/step - accuracy: 0.9324 - loss: 0.2038 - val_accuracy: 0.8565 - val_loss: 0.3744
+Epoch 7: early stopping
+Restoring model weights from the end of the best epoch: 4.

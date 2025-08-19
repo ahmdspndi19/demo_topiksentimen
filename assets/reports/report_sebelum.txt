@@ -1,0 +1,37 @@
+--- Melatih Model 'Sebelum' Perbaikan ---
+/usr/local/lib/python3.11/dist-packages/keras/src/layers/core/embedding.py:97: UserWarning: Argument `input_length` is deprecated. Just remove it.
+  warnings.warn(
+Epoch 1/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 6s 73ms/step - accuracy: 0.6948 - loss: 0.8812 - val_accuracy: 0.7160 - val_loss: 0.7332
+Epoch 2/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 2s 56ms/step - accuracy: 0.7091 - loss: 0.7510 - val_accuracy: 0.7160 - val_loss: 0.7316
+Epoch 3/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 2s 51ms/step - accuracy: 0.7110 - loss: 0.7564 - val_accuracy: 0.7160 - val_loss: 0.7314
+Epoch 4/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 2s 51ms/step - accuracy: 0.7083 - loss: 0.7697 - val_accuracy: 0.7160 - val_loss: 0.7320
+Epoch 5/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 3s 67ms/step - accuracy: 0.7134 - loss: 0.7432 - val_accuracy: 0.7160 - val_loss: 0.7338
+Epoch 6/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 3s 75ms/step - accuracy: 0.6936 - loss: 0.7832 - val_accuracy: 0.7160 - val_loss: 0.7312
+Epoch 7/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 4s 52ms/step - accuracy: 0.7154 - loss: 0.7587 - val_accuracy: 0.7160 - val_loss: 0.7310
+Epoch 8/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 2s 54ms/step - accuracy: 0.7179 - loss: 0.7506 - val_accuracy: 0.7160 - val_loss: 0.7311
+Epoch 9/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 2s 52ms/step - accuracy: 0.6963 - loss: 0.7656 - val_accuracy: 0.7160 - val_loss: 0.7312
+Epoch 10/10
+42/42 ━━━━━━━━━━━━━━━━━━━━ 3s 80ms/step - accuracy: 0.7213 - loss: 0.7371 - val_accuracy: 0.7160 - val_loss: 0.7320
+
+--- Hasil Evaluasi Model SEBELUM Perbaikan ---
+21/21 ━━━━━━━━━━━━━━━━━━━━ 1s 19ms/step
+
+>>> LAPORAN KLASIFIKASI (SEBELUM):
+              precision    recall  f1-score   support
+
+     Negatif     0.0000    0.0000    0.0000       154
+      Netral     0.0000    0.0000    0.0000        34
+     Positif     0.7160    1.0000    0.8345       474
+
+    accuracy                         0.7160       662
+   macro avg     0.2387    0.3333    0.2782       662
+weighted avg     0.5127    0.7160    0.5975       662

@@ -1,0 +1,80 @@
+Tahap 1: Memuat dan melakukan pra-pemrosesan data...
+-> Dataset '/content/drive/MyDrive/MODELSKRIPSIAHMADSUPANDI/Hasil_Preprocessing_Data.csv' berhasil dimuat.
+-> Ditemukan 5512 dokumen.
+-> Menghapus custom stopwords untuk membersihkan data...
+-> Custom stopwords berhasil dihapus.
+-> Membuat model bigram dan trigram untuk menangkap frasa...
+-> Pra-pemrosesan selesai.
+
+Tahap 2: Membuat Dictionary dan Corpus...
+-> Dictionary dibuat dengan 235 kata unik (setelah filter).
+-> Corpus dibuat dengan 5512 dokumen.
+-> Pembuatan Dictionary dan Corpus selesai.
+
+Tahap 3: Memulai Hyperparameter Tuning (Grid Search)...
+Ini mungkin akan memakan waktu cukup lama, harap bersabar.
+
+Alpha: 0.01         | Eta: 0.01         | Passes: 10  -> Skor Koherensi: 0.6044 (Waktu: 18.59 detik)
+Alpha: 0.01         | Eta: 0.01         | Passes: 20  -> Skor Koherensi: 0.6044 (Waktu: 23.17 detik)
+Alpha: 0.01         | Eta: 0.1          | Passes: 10  -> Skor Koherensi: 0.5338 (Waktu: 15.32 detik)
+Alpha: 0.01         | Eta: 0.1          | Passes: 20  -> Skor Koherensi: 0.5338 (Waktu: 14.40 detik)
+Alpha: 0.01         | Eta: symmetric    | Passes: 10  -> Skor Koherensi: 0.5294 (Waktu: 7.15 detik)
+Alpha: 0.01         | Eta: symmetric    | Passes: 20  -> Skor Koherensi: 0.5294 (Waktu: 12.72 detik)
+Alpha: 0.1          | Eta: 0.01         | Passes: 10  -> Skor Koherensi: 0.6098 (Waktu: 4.98 detik)
+Alpha: 0.1          | Eta: 0.01         | Passes: 20  -> Skor Koherensi: 0.6098 (Waktu: 10.96 detik)
+Alpha: 0.1          | Eta: 0.1          | Passes: 10  -> Skor Koherensi: 0.5318 (Waktu: 4.97 detik)
+Alpha: 0.1          | Eta: 0.1          | Passes: 20  -> Skor Koherensi: 0.5301 (Waktu: 10.84 detik)
+Alpha: 0.1          | Eta: symmetric    | Passes: 10  -> Skor Koherensi: 0.5499 (Waktu: 5.93 detik)
+Alpha: 0.1          | Eta: symmetric    | Passes: 20  -> Skor Koherensi: 0.5499 (Waktu: 10.16 detik)
+Alpha: symmetric    | Eta: 0.01         | Passes: 10  -> Skor Koherensi: 0.6044 (Waktu: 6.50 detik)
+Alpha: symmetric    | Eta: 0.01         | Passes: 20  -> Skor Koherensi: 0.6044 (Waktu: 9.80 detik)
+Alpha: symmetric    | Eta: 0.1          | Passes: 10  -> Skor Koherensi: 0.5347 (Waktu: 11.05 detik)
+Alpha: symmetric    | Eta: 0.1          | Passes: 20  -> Skor Koherensi: 0.5359 (Waktu: 17.84 detik)
+Alpha: symmetric    | Eta: symmetric    | Passes: 10  -> Skor Koherensi: 0.5401 (Waktu: 8.40 detik)
+Alpha: symmetric    | Eta: symmetric    | Passes: 20  -> Skor Koherensi: 0.5401 (Waktu: 10.43 detik)
+Alpha: asymmetric   | Eta: 0.01         | Passes: 10  -> Skor Koherensi: 0.6002 (Waktu: 5.75 detik)
+Alpha: asymmetric   | Eta: 0.01         | Passes: 20  -> Skor Koherensi: 0.6002 (Waktu: 11.16 detik)
+Alpha: asymmetric   | Eta: 0.1          | Passes: 10  -> Skor Koherensi: 0.5213 (Waktu: 4.78 detik)
+Alpha: asymmetric   | Eta: 0.1          | Passes: 20  -> Skor Koherensi: 0.5221 (Waktu: 10.29 detik)
+Alpha: asymmetric   | Eta: symmetric    | Passes: 10  -> Skor Koherensi: 0.5448 (Waktu: 4.88 detik)
+Alpha: asymmetric   | Eta: symmetric    | Passes: 20  -> Skor Koherensi: 0.5420 (Waktu: 10.43 detik)
+
+-> Hyperparameter Tuning selesai.
+
+=======================================================
+                 HASIL AKHIR OPTIMASI MODEL LDA
+=======================================================
+Jumlah Topik Optimal: 12
+Kombinasi Hyperparameter Terbaik:
+  - Alpha: 0.1
+  - Eta: 0.01
+  - Passes: 10
+Skor Koherensi (C_v) Tertinggi: 0.6098
+
+Topik yang ditemukan oleh model terbaik (hanya keywords):
+  Topik 1: kali, tinggal, selesai, data, urus, loading, butuh, mana, konfirmasi, login
+  Topik 2: samsat, kantor, jawa, cuman, nomor, login, kesamsat, stnknya, maju, sayang
+  Topik 3: antri, rumah, signal, tunggu, sat_set, the_best, nomor, kesamsat, cuman, polisi
+  Topik 4: bayar, pajak, signal, tahun, uang, digital, offline, good_job, cuman, batu
+  Topik 5: pos, online, daerah, pilih, via, baca, tugas, byr, rebah, hari
+  Topik 6: proses, kirim, percaya, login, kilat, jawa, cuman, no, nomor, masuk
+  Topik 7: minggu, langsung, kota, kode, bayar, bukti, kendala, makan, luar, kembang
+  Topik 8: pakai, masyarakat, email, cetak, jatuh_tempo, lot, muter, batu, masuk, stnknya
+  Topik 9: kerja, daftar, sibuk, opsi, ktp, tambah, bank, ubah, foto, pra_collecting
+  Topik 10: stnk, tingkat, panjang, rantau, fitur, jakarta, akses, plat, domisili, jawa
+  Topik 11: kendara, motor, orang, depan, nama, saran, kena, satset, denda, bekas
+  Topik 12: kirim, bantu, layan, dokumen, live_chat, perintah, kilat, jawa, cuman, nomor
+
+Topik yang ditemukan (dengan format asli dari print_topics):
+  Topik 1: 0.281*"kali" + 0.249*"tinggal" + 0.149*"selesai" + 0.122*"data" + 0.101*"urus" + 0.040*"loading" + 0.019*"butuh" + 0.019*"mana" + 0.016*"konfirmasi" + 0.000*"login"
+  Topik 2: 0.838*"samsat" + 0.158*"kantor" + 0.000*"jawa" + 0.000*"cuman" + 0.000*"nomor" + 0.000*"login" + 0.000*"kesamsat" + 0.000*"stnknya" + 0.000*"maju" + 0.000*"sayang"
+  Topik 3: 0.321*"antri" + 0.277*"rumah" + 0.276*"signal" + 0.094*"tunggu" + 0.017*"sat_set" + 0.013*"the_best" + 0.000*"nomor" + 0.000*"kesamsat" + 0.000*"cuman" + 0.000*"polisi"
+  Topik 4: 0.484*"bayar" + 0.402*"pajak" + 0.055*"signal" + 0.040*"tahun" + 0.006*"uang" + 0.006*"digital" + 0.004*"offline" + 0.002*"good_job" + 0.000*"cuman" + 0.000*"batu"
+  Topik 5: 0.325*"pos" + 0.264*"online" + 0.118*"daerah" + 0.087*"pilih" + 0.051*"via" + 0.032*"baca" + 0.031*"tugas" + 0.031*"byr" + 0.021*"rebah" + 0.018*"hari"
+  Topik 6: 0.784*"proses" + 0.170*"kirim" + 0.042*"percaya" + 0.000*"login" + 0.000*"kilat" + 0.000*"jawa" + 0.000*"cuman" + 0.000*"no" + 0.000*"nomor" + 0.000*"masuk"
+  Topik 7: 0.311*"minggu" + 0.255*"langsung" + 0.123*"kota" + 0.117*"kode" + 0.101*"bayar" + 0.034*"bukti" + 0.016*"kendala" + 0.014*"makan" + 0.011*"luar" + 0.009*"kembang"
+  Topik 8: 0.519*"pakai" + 0.222*"masyarakat" + 0.127*"email" + 0.054*"cetak" + 0.028*"jatuh_tempo" + 0.023*"lot" + 0.022*"muter" + 0.000*"batu" + 0.000*"masuk" + 0.000*"stnknya"
+  Topik 9: 0.282*"kerja" + 0.190*"daftar" + 0.171*"sibuk" + 0.127*"opsi" + 0.068*"ktp" + 0.066*"tambah" + 0.037*"bank" + 0.025*"ubah" + 0.020*"foto" + 0.010*"pra_collecting"
+  Topik 10: 0.529*"stnk" + 0.200*"tingkat" + 0.168*"panjang" + 0.035*"rantau" + 0.025*"fitur" + 0.012*"jakarta" + 0.011*"akses" + 0.009*"plat" + 0.008*"domisili" + 0.000*"jawa"
+  Topik 11: 0.521*"kendara" + 0.141*"motor" + 0.120*"orang" + 0.085*"depan" + 0.051*"nama" + 0.034*"saran" + 0.020*"kena" + 0.010*"satset" + 0.007*"denda" + 0.006*"bekas"
+  Topik 12: 0.382*"kirim" + 0.380*"bantu" + 0.192*"layan" + 0.027*"dokumen" + 0.014*"live_chat" + 0.005*"perintah" + 0.000*"kilat" + 0.000*"jawa" + 0.000*"cuman" + 0.000*"nomor"

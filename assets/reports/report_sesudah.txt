@@ -1,0 +1,33 @@
+--- Melatih Model 'Sesudah' Perbaikan ---
+Epoch 1/25
+/usr/local/lib/python3.11/dist-packages/keras/src/layers/core/embedding.py:97: UserWarning: Argument `input_length` is deprecated. Just remove it.
+  warnings.warn(
+42/42 ━━━━━━━━━━━━━━━━━━━━ 19s 320ms/step - accuracy: 0.4591 - loss: 1.0818 - val_accuracy: 0.7734 - val_loss: 0.9501
+Epoch 2/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 13s 302ms/step - accuracy: 0.8032 - loss: 0.9108 - val_accuracy: 0.7583 - val_loss: 0.5956
+Epoch 3/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 13s 301ms/step - accuracy: 0.8161 - loss: 0.5798 - val_accuracy: 0.8066 - val_loss: 0.4448
+Epoch 4/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 20s 283ms/step - accuracy: 0.8377 - loss: 0.4697 - val_accuracy: 0.8656 - val_loss: 0.3454
+Epoch 5/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 21s 300ms/step - accuracy: 0.9219 - loss: 0.3283 - val_accuracy: 0.8429 - val_loss: 0.3632
+Epoch 6/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 21s 305ms/step - accuracy: 0.9275 - loss: 0.2432 - val_accuracy: 0.8580 - val_loss: 0.3885
+Epoch 7/25
+42/42 ━━━━━━━━━━━━━━━━━━━━ 20s 303ms/step - accuracy: 0.9324 - loss: 0.2038 - val_accuracy: 0.8565 - val_loss: 0.3744
+Epoch 7: early stopping
+Restoring model weights from the end of the best epoch: 4.
+
+--- Hasil Evaluasi Model SESUDAH Perbaikan ---
+21/21 ━━━━━━━━━━━━━━━━━━━━ 2s 68ms/step
+
+>>> LAPORAN KLASIFIKASI (SESUDAH):
+              precision    recall  f1-score   support
+
+     Negatif     0.8846    0.7468    0.8099       154
+      Netral     0.2794    0.5588    0.3725        34
+     Positif     0.9461    0.9262    0.9360       474
+
+    accuracy                         0.8656       662
+   macro avg     0.7034    0.7439    0.7061       662
+weighted avg     0.8976    0.8656    0.8777       662
