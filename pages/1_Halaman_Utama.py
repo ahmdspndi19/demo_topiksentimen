@@ -58,7 +58,7 @@ with col1:
                      title='Proporsi Sentimen Ulasan',
                      color='Sentimen',
                      color_discrete_map={'Positif':'#28a745', 'Negatif':'#dc3545', 'Netral':'#ffc107'})
-    st.plotly_chart(fig_pie, width='stretch')
+    st.plotly_chart(fig_pie, use_container_width=True)
 
 with col2:
     st.subheader("Topik Paling Umum")
@@ -74,4 +74,4 @@ with col2:
                      text='count',
                      labels={'Deskripsi Topik': 'Topik', 'count': 'Jumlah'})
     fig_bar.update_layout(yaxis={'categoryorder':'total ascending'})
-    st.plotly_chart(fig_bar, width='stretch')
+    st.plotly_chart(fig_bar, use_container_width=True)

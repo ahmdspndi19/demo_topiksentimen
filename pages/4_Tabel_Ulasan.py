@@ -63,7 +63,7 @@ if 'confidence_score' in df_selection.columns:
 
 st.dataframe(
     df_selection[columns_to_display],
-    width='stretch',
+    use_container_width=True,
     hide_index=True,
     column_config={
         "confidence_score": st.column_config.ProgressColumn(
