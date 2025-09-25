@@ -63,7 +63,14 @@ if selected_topic:
                                color='Sentimen', # Menggunakan 'Sentimen'
                                color_discrete_map={'Positif':'#28a745', 'Negatif':'#dc3545', 'Netral':'#ffc107'})
         fig_pie_topic.update_traces(textposition='inside', textinfo='percent+label')
-        st.plotly_chart(fig_pie_topic, width='stretch')
+        
+        # Buat dictionary config untuk opsi Plotly
+        plotly_config = {
+            'displayModeBar': False, # Contoh: menyembunyikan menu bar plotly
+            'scrollZoom': True
+        }
+        
+        st.plotly_chart(fig_pie_topic, width='stretch', config=plotly_config)
 
     st.subheader("Contoh Ulasan Terkait")
     # Menampilkan kolom 'Kalimat', 'Sentimen', dan 'Detail Topik'

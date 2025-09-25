@@ -24,6 +24,12 @@ if df is None or df.empty:
     st.warning("Data tidak tersedia. Tidak dapat menampilkan analisis sentimen.")
     st.stop()
 
+# Definisikan dictionary config sekali di awal untuk digunakan kembali
+plotly_config = {
+    'displayModeBar': False,
+    'scrollZoom': True
+}
+
 # --- VISUALISASI UTAMA ---
 col1, col2 = st.columns(2)
 
@@ -48,7 +54,7 @@ with col1:
         }
     )
     fig_bar.update_traces(textposition='outside')
-    st.plotly_chart(fig_bar, width='stretch')
+    st.plotly_chart(fig_bar, width='stretch', config=plotly_config)
 
 with col2:
     st.subheader("Distribusi Sentimen Keseluruhan")
@@ -71,7 +77,7 @@ with col2:
     )
     # Menambahkan persentase dan label pada setiap irisan
     fig_pie.update_traces(textinfo='percent+label')
-    st.plotly_chart(fig_pie, width='stretch')
+    st.plotly_chart(fig_pie, width='stretch', config=plotly_config)
 
 # --- ANALISIS TOPIK PER SENTIMEN ---
 st.header("Analisis Topik per Kategori Sentimen")
@@ -97,6 +103,6 @@ if selected_sentiment:
                                        title=f'Top 10 Topik Sentimen {selected_sentiment}',
                                        text='Jumlah')
         fig_bar_sentiment.update_layout(yaxis={'categoryorder':'total ascending'})
-        st.plotly_chart(fig_bar_sentiment, width='stretch')
+        st.plotly_chart(fig_bar_sentiment, width='stretch', config=plotly_config)
     else:
         st.info(f"Tidak ada ulasan dengan sentimen '{selected_sentiment}' untuk dianalisis.")
