@@ -19,14 +19,22 @@ def load_data(filepath):
 
     try:
         df = pd.read_csv(filepath)
-        # Ganti nama 'skor_sentimen' menjadi 'confidence_score' untuk konsistensi internal
-        if 'skor_sentimen' in df.columns:
-            df.rename(columns={'skor_sentimen': 'confidence_score'}, inplace=True)
+        # Ganti nama 'Skor Sentimen' menjadi 'confidence_score' untuk konsistensi internal
+        # Menyesuaikan nama kolom sumber menjadi 'Skor Sentimen'
+        if 'Skor Sentimen' in df.columns:
+            df.rename(columns={'Skor Sentimen': 'confidence_score'}, inplace=True)
 
-        df['Topik_Gabungan'] = df['deskripsi_topik'].astype(str) + ", " + df['detail_topik'].astype(str)
+        # Menyesuaikan nama kolom 'deskripsi_topik' dan 'detail_topik'
+        df['Topik_Gabungan'] = df['Deskripsi Topik'].astype(str) + ", " + df['Detail Topik'].astype(str)
+        
+        # Menyesuaikan nama kolom 'ulasan_lengkap' menjadi 'Kalimat'
         if 'pecahan_kalimat' not in df.columns:
-            df['pecahan_kalimat'] = df['ulasan_lengkap']
+            df['pecahan_kalimat'] = df['Kalimat']
         return df
+    except KeyError as e:
+        st.error(f"Terjadi kesalahan: Kolom yang diharapkan tidak ditemukan -> {e}.")
+        st.info("Pastikan file CSV Anda memiliki kolom: 'Kalimat', 'Deskripsi Topik', 'Detail Topik', 'Sentimen', 'Skor Sentimen'.")
+        return None
     except Exception as e:
         st.error(f"Terjadi kesalahan saat memuat atau memproses data: {e}")
         return None

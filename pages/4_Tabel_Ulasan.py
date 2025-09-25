@@ -27,39 +27,43 @@ if df is None or df.empty:
 st.sidebar.header("Opsi Filter")
 
 # Filter berdasarkan Sentimen
-sentiments_options = ['Semua'] + df['sentimen'].unique().tolist()
+# Menggunakan kolom 'Sentimen'
+sentiments_options = ['Semua'] + df['Sentimen'].unique().tolist()
 selected_sentiment = st.sidebar.selectbox("Filter berdasarkan Sentimen:", options=sentiments_options)
 
 # Filter berdasarkan Topik
-topics_options = ['Semua'] + df['deskripsi_topik'].unique().tolist()
+# Menggunakan kolom 'Deskripsi Topik'
+topics_options = ['Semua'] + df['Deskripsi Topik'].unique().tolist()
 selected_topic = st.sidebar.selectbox("Filter berdasarkan Topik:", options=topics_options)
 
 # Pencarian teks
+# Menggunakan kolom 'Kalimat' untuk pencarian
 search_query = st.sidebar.text_input("Cari kata kunci dalam ulasan:")
 
 # --- LOGIKA FILTER ---
 df_selection = df.copy() # Mulai dengan semua data
 
 if selected_sentiment != 'Semua':
-    df_selection = df_selection[df_selection['sentimen'] == selected_sentiment]
+    df_selection = df_selection[df_selection['Sentimen'] == selected_sentiment]
 
 if selected_topic != 'Semua':
-    df_selection = df_selection[df_selection['deskripsi_topik'] == selected_topic]
+    df_selection = df_selection[df_selection['Deskripsi Topik'] == selected_topic]
 
 if search_query:
-    df_selection = df_selection[df_selection['ulasan_lengkap'].str.contains(search_query, case=False, na=False)]
+    df_selection = df_selection[df_selection['Kalimat'].str.contains(search_query, case=False, na=False)]
 
 # --- TAMPILKAN HASIL ---
 st.info(f"Menampilkan {len(df_selection)} dari {len(df)} total ulasan berdasarkan filter Anda.")
 
 # Tampilkan tabel data yang sudah difilter
-columns_to_display = ['ulasan_lengkap', 'sentimen', 'deskripsi_topik', 'detail_topik']
+# Menyesuaikan daftar kolom yang akan ditampilkan
+columns_to_display = ['Kalimat', 'Sentimen', 'Deskripsi Topik', 'Detail Topik']
 if 'confidence_score' in df_selection.columns:
     columns_to_display.append('confidence_score')
 
 st.dataframe(
     df_selection[columns_to_display],
-    use_container_width=True,
+    width='stretch',
     hide_index=True,
     column_config={
         "confidence_score": st.column_config.ProgressColumn(

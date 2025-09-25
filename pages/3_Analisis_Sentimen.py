@@ -29,17 +29,16 @@ col1, col2 = st.columns(2)
 
 with col1:
     st.subheader("Distribusi Sentimen Keseluruhan")
-    sentiment_counts = df['sentimen'].value_counts().reset_index()
-    sentiment_counts.columns = ['sentimen', 'jumlah']
+    # Menggunakan kolom 'Sentimen'
+    sentiment_counts = df['Sentimen'].value_counts().reset_index()
+    sentiment_counts.columns = ['Sentimen', 'jumlah']
 
-    # --- PERBAIKAN DI SINI ---
-    # Mengganti st.bar_chart dengan plotly.express.bar
-    # untuk memungkinkan pemetaan warna berdasarkan kategori sentimen.
+    # Menggunakan plotly.express.bar untuk pemetaan warna
     fig_bar = px.bar(
         sentiment_counts,
-        x='sentimen',
+        x='Sentimen', # Menggunakan 'Sentimen'
         y='jumlah',
-        color='sentimen', # <-- Kunci untuk mewarnai bar berdasarkan kolom 'sentimen'
+        color='Sentimen', # Mewarnai bar berdasarkan kolom 'Sentimen'
         title='Jumlah Ulasan per Kategori Sentimen',
         text='jumlah',
         color_discrete_map={
@@ -49,21 +48,30 @@ with col1:
         }
     )
     fig_bar.update_traces(textposition='outside')
-    st.plotly_chart(fig_bar, use_container_width=True)
-
+    st.plotly_chart(fig_bar, width='stretch')
 
 with col2:
-    st.subheader("Distribusi Skor Kepercayaan")
-    if 'confidence_score' in df.columns:
-        fig_hist = px.histogram(df, x="confidence_score", color="sentimen",
-                                title="Distribusi Skor Kepercayaan berdasarkan Sentimen",
-                                marginal="box",
-                                color_discrete_map={'Positif':'#28a745', 'Negatif':'#dc3545', 'Netral':'#ffc107'})
-        st.plotly_chart(fig_hist, use_container_width=True)
-    else:
-        st.info("Kolom 'confidence_score' atau 'skor_sentimen' tidak tersedia untuk analisis ini.")
+    st.subheader("Distribusi Sentimen Keseluruhan")
+    # Menggunakan kolom 'Sentimen' untuk menghitung jumlah
+    sentiment_counts = df['Sentimen'].value_counts().reset_index()
+    sentiment_counts.columns = ['Sentimen', 'jumlah']
 
-st.markdown("---")
+    # Menggunakan plotly.express.pie untuk membuat diagram lingkaran
+    fig_pie = px.pie(
+        sentiment_counts,
+        names='Sentimen',      # Kolom untuk label setiap irisan
+        values='jumlah',       # Kolom untuk nilai/ukuran setiap irisan
+        color='Sentimen',      # Mewarnai irisan berdasarkan kolom 'Sentimen'
+        title='Proporsi Ulasan per Kategori Sentimen',
+        color_discrete_map={
+            'Positif': '#28a745',
+            'Negatif': '#dc3545',
+            'Netral': '#ffc107'
+        }
+    )
+    # Menambahkan persentase dan label pada setiap irisan
+    fig_pie.update_traces(textinfo='percent+label')
+    st.plotly_chart(fig_pie, width='stretch')
 
 # --- ANALISIS TOPIK PER SENTIMEN ---
 st.header("Analisis Topik per Kategori Sentimen")
@@ -74,19 +82,21 @@ selected_sentiment = st.selectbox(
 
 if selected_sentiment:
     st.subheader(f"Topik yang Paling Sering Muncul untuk Sentimen '{selected_sentiment}'")
-    df_sentiment = df[df['sentimen'] == selected_sentiment]
+    # Melakukan filter berdasarkan kolom 'Sentimen'
+    df_sentiment = df[df['Sentimen'] == selected_sentiment]
     
     if not df_sentiment.empty:
-        top_topics_sentiment = df_sentiment['deskripsi_topik'].value_counts().nlargest(10).reset_index()
+        # Mengambil topik dari kolom 'Deskripsi Topik'
+        top_topics_sentiment = df_sentiment['Deskripsi Topik'].value_counts().nlargest(10).reset_index()
         top_topics_sentiment.columns = ['Topik', 'Jumlah']
         
         fig_bar_sentiment = px.bar(top_topics_sentiment,
-                                   x='Jumlah',
-                                   y='Topik',
-                                   orientation='h',
-                                   title=f'Top 10 Topik Sentimen {selected_sentiment}',
-                                   text='Jumlah')
+                                       x='Jumlah',
+                                       y='Topik',
+                                       orientation='h',
+                                       title=f'Top 10 Topik Sentimen {selected_sentiment}',
+                                       text='Jumlah')
         fig_bar_sentiment.update_layout(yaxis={'categoryorder':'total ascending'})
-        st.plotly_chart(fig_bar_sentiment, use_container_width=True)
+        st.plotly_chart(fig_bar_sentiment, width='stretch')
     else:
         st.info(f"Tidak ada ulasan dengan sentimen '{selected_sentiment}' untuk dianalisis.")

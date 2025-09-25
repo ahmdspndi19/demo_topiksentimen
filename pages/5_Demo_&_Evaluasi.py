@@ -37,27 +37,39 @@ def muat_aset_pra_pemrosesan():
         
         # Custom Stopwords untuk LDA
         custom_stopwords = [
-            'aman', 'aneh', 'bagus', 'baik', 'bingung', 'buruk', 'cepat', 'cocok', 'enak', 'efisien',
-            'gagal', 'gercep', 'hebat', 'hemat', 'jelek', 'jelas', 'kecewa', 'keren', 'lancar',
-            'lambat', 'lemot', 'lumayan', 'mahal', 'malas', 'mantap', 'mantul', 'membantu',
-            'mending', 'mudah', 'nyaman', 'ok', 'paham', 'parah', 'praktis', 'puas', 'pusing',
-            'repot', 'ribet', 'rumit', 'salah', 'sesuai', 'sip', 'sukses', 'sulit', 'super',
-            'susah', 'takut', 'terbantu', 'top', 'admin', 'anda', 'bro', 'gan', 'kak', 'kakak',
-            'kamu', 'min', 'saya', 'sis', 'aja', 'banget', 'bolak', 'coba', 'deh', 'dgn', 'dll',
-            'dong', 'ga', 'gak', 'gk', 'enggak', 'kalo', 'kalau', 'kah', 'kayak', 'kok', 'krn',
-            'line', 'nggak', 'nih', 'on', 'sih', 'yg', 'alhamdulillah', 'app', 'aplikasi', 'apk',
-            'jadi', 'kesah', 'mohon', 'moga', 'semoga', 'terima_kasih', 'thanks', 'tolong', 'ulang',
-            'amanah', 'simpel', 'banyak', 'hasil', 'metode', 'terima', 'kasih'
+                    'aman', 'aneh', 'bagus', 'baik', 'bingung', 'buruk', 'cepat', 'cocok', 'enak',
+            'efisien', 'gagal', 'gercep', 'hebat', 'hemat', 'jelek', 'jelas', 'kecewa',
+            'keren', 'lancar', 'lambat', 'lemot', 'lumayan', 'mahal', 'malas', 'mantap',
+            'mantul', 'membantu', 'mending', 'mudah', 'nyaman', 'ok', 'paham', 'parah',
+            'praktis', 'puas', 'pusing', 'repot', 'ribet', 'rumit', 'salah', 'sesuai', 'sip',
+            'sukses', 'sulit', 'super', 'susah', 'takut', 'terbantu', 'top', 'simpel',
+            'amanah', 'bintang', 'mantab', 'trimakasih', 'gampang', 'oke', 'good', 'muas',
+            'percaya', 'eror', 'error', 'pungli', 'kesah', 'mulu', 'sayang', 'simple',
+            'manfaat', 'best', 'the', 'efektif', 'adu', 'capek', 'ganggu', 'calo', 'terang',
+            'manis', 'job', 'bebas', 'saran', 'taat', 'admin', 'anda', 'bro', 'gan', 'kak',
+            'kakak', 'kamu', 'min', 'saya', 'sis', 'aja', 'banget', 'bolak', 'coba', 'deh',
+            'dgn', 'dong', 'ga', 'gak', 'gk', 'enggak', 'kalo', 'kalau', 'kah', 'kayak',
+            'kok', 'krn', 'line', 'nggak', 'nih', 'on', 'sih', 'yg', 'ya', 'si', 'biar',
+            'cuman', 'n', 'satset', 'doang', 'app', 'aplikasi', 'apk', 'jadi', 'banyak',
+            'hasil', 'metode', 'kerja', 'pakai', 'alhamdulillah', 'terima_kasih', 'thanks',
+            'good_job', 'the_best', 'sat_set', 'terima', 'kasih', 'mohon', 'moga', 'semoga',
+            'tolong', 'tinggal', 'tunggu'
         ]
 
-        # Kamus Label Topik Deskriptif
+        # Kamus Label Topik Deskriptif (disesuaikan agar cocok dengan output laporan)
         label_topik = {
-            0: "Keluhan Lamanya Proses Aplikasi", 1: "Urusan di Kantor Samsat",
-            2: "Layanan dari Rumah (Anti Antri)", 3: "Pembayaran Pajak Kendaraan",
-            4: "Pilihan Metode Layanan (Online/Pos)", 5: "Pengiriman Dokumen Fisik",
-            6: "Lama Proses & Layanan Antar Kota", 7: "Fitur Cetak Bukti & Notifikasi",
-            8: "Bantuan Pendaftaran Akun", 9: "Perpanjang STNK (Luar Daerah)",
-            10: "Urusan Kendaraan & Saran Pengguna", 11: "Bantuan CS & Live Chat"
+            0: "Fitur dan Layanan Bantuan Aplikasi",
+            1: "Proses dan Durasi Pengiriman STNK",
+            2: "Kualitas Pelayanan dan Antrean di Samsat",
+            3: "Layanan Pengiriman STNK ke Rumah",
+            4: "Pembayaran Pajak Kendaraan Online",
+            5: "Permintaan Bantuan dan Saran Peningkatan",
+            6: "Rincian Biaya Administrasi dan Transaksi",
+            7: "Kendala Teknis Aplikasi (Loading)",
+            8: "Proses Pengurusan via Aplikasi SIGNAL",
+            9: "Layanan Jasa Kurir Pengiriman",
+            10: "Perpanjangan STNK 5 Tahunan (Ganti Plat)",
+            11: "Perbandingan Layanan Online vs. Kantor Samsat"
         }
 
         return stemmer, stopword_remover, kamus_norm, custom_stopwords, label_topik
@@ -112,12 +124,9 @@ def pra_pemrosesan_lda(teks, kamus_norm, stemmer_obj, custom_stopwords_list):
     return teks
 
 def prediksi_sentimen(teks, model, tokenizer, label_encoder, aset_prep):
-    """
-    Memprediksi sentimen dan mengembalikan label beserta skor keyakinannya.
-    """
     stemmer, stopword, kamus, _, _ = aset_prep
     teks_bersih = pra_pemrosesan_lstm(teks, kamus, stemmer, stopword)
-    if not teks_bersih: return "Netral", 0.5  # Kembalikan skor netral jika teks kosong
+    if not teks_bersih: return "Netral", 0.5
     
     maxlen = model.input_shape[1]
     sekuens = tokenizer.texts_to_sequences([teks_bersih])
@@ -133,40 +142,42 @@ def prediksi_sentimen(teks, model, tokenizer, label_encoder, aset_prep):
 def prediksi_topik_lda(teks, model, dictionary, aset_prep):
     stemmer, _, kamus, custom_stopwords, label_topik_map = aset_prep
     teks_bersih = pra_pemrosesan_lda(teks, kamus, stemmer, custom_stopwords)
-    if not teks_bersih: return "Topik Tidak Relevan", "Teks kosong setelah pra-pemrosesan.", 0.0
+    if not teks_bersih: return "Topik Tidak Relevan", "Teks kosong...", 0.0
     tokens = teks_bersih.split()
     bow_vector = dictionary.doc2bow(tokens)
     topic_distribution = model.get_document_topics(bow_vector, minimum_probability=0.1)
-    if not topic_distribution: return "Topik Tidak Relevan", "Tidak ada topik yang cocok ditemukan.", 0.0
+    if not topic_distribution: return "Topik Tidak Relevan", "Tidak ada topik cocok.", 0.0
     top_topic_index, confidence = sorted(topic_distribution, key=lambda x: x[1], reverse=True)[0]
-    deskripsi_topik = label_topik_map.get(top_topic_index, f"Topik {top_topic_index}")
+    deskripsi_topik = label_topik_map.get(top_topic_index, f"Topik {top_topic_index+1}")
     keywords_tuples = model.show_topic(top_topic_index, topn=5)
     keywords_string = ', '.join([word for word, prop in keywords_tuples])
     return deskripsi_topik, keywords_string, confidence
 
-def parse_lda_report(report_text):
+def parse_lda_report(report_text, labels_map):
     """Mem-parsing teks laporan LDA untuk mengekstrak informasi kunci."""
     if not report_text or "File tidak ditemukan" in report_text: return {}
     results = {}
     try:
-        coherence_match = re.search(r"Skor Koherensi \(C_v\) Tertinggi: ([\d.]+)", report_text)
+        # Mengambil metrik utama
+        coherence_match = re.search(r"Skor koherensi tertinggi adalah ([\d.]+)", report_text)
         if coherence_match: results['coherence_score'] = float(coherence_match.group(1))
-        topics_match = re.search(r"Jumlah Topik Optimal: (\d+)", report_text)
+        
+        topics_match = re.search(r"Jumlah topik yang menghasilkan skor tertinggi: (\d+)", report_text)
         if topics_match: results['optimal_topics'] = int(topics_match.group(1))
-        alpha_match = re.search(r"- Alpha: ([\d\w.]+)", report_text)
-        if alpha_match: results['alpha'] = alpha_match.group(1)
-        eta_match = re.search(r"- Eta: ([\d\w.]+)", report_text)
-        if eta_match: results['eta'] = eta_match.group(1)
-        topics_keywords_raw = re.search(r"Topik yang ditemukan oleh model terbaik \(hanya keywords\):([\s\S]*)Topik yang ditemukan \(dengan format asli", report_text)
-        if topics_keywords_raw:
-            topics_list = topics_keywords_raw.group(1).strip().split('\n')
+        
+        # Ekstrak topik dan kata kuncinya
+        topics_section = re.search(r"Topik yang ditemukan oleh model dengan \d+ topik:([\s\S]*)====== EVALUASI FINAL ======", report_text)
+        if topics_section:
+            topics_list = topics_section.group(1).strip().split('\n')
             topics_dict = {}
-            for line in topics_list:
-                if ': ' in line:
-                    parts = line.split(': ')
-                    topic_name = parts[0].strip()
-                    keywords = [kw.strip() for kw in parts[1].split(',')]
-                    topics_dict[topic_name] = keywords
+            for i, line in enumerate(topics_list):
+                if 'Topik' in line:
+                    # Mengambil hanya kata-kata kunci
+                    keywords_raw = line.split(': ')[1]
+                    keywords = [re.sub(r'[\d."*+]', '', word).strip() for word in keywords_raw.split('+')]
+                    # Menggunakan label deskriptif dari map
+                    topic_label = labels_map.get(i, f"Topik {i+1}")
+                    topics_dict[topic_label] = keywords
             results['topics'] = topics_dict
     except Exception as e:
         st.error(f"Gagal mem-parsing laporan LDA: {e}")
@@ -208,23 +219,17 @@ if semua_aset_siap:
                 deskripsi_topik, keywords_topik, _ = prediksi_topik_lda(input_teks, model_lda, dictionary_lda, aset_prep)
 
             st.subheader("Hasil Analisis Gabungan")
-            
             col1, col2 = st.columns(2)
-            
             with col1:
                 st.markdown("##### Analisis Sentimen (LSTM)")
-                # Tampilkan label sentimen dengan warna
                 if 'positif' in hasil_sentimen.lower():
                     st.success(f"**{hasil_sentimen.upper()}** 👍")
                 elif 'negatif' in hasil_sentimen.lower():
                     st.error(f"**{hasil_sentimen.upper()}** 👎")
                 else:
                     st.warning(f"**{hasil_sentimen.upper()}** 😐")
-                
-                # Tampilkan skor keyakinan dengan progress bar
                 st.caption(f"Tingkat Keyakinan: **{skor_sentimen:.2%}**")
                 st.progress(float(skor_sentimen))
-            
             with col2:
                 st.markdown("##### Analisis Topik (LDA)")
                 st.success(f"**{deskripsi_topik}**")
@@ -247,16 +252,15 @@ log_sebelum = load_text_file(os.path.join(REPORTS_DIR, "training_log_sebelum.txt
 log_sesudah = load_text_file(os.path.join(REPORTS_DIR, "training_log_sesudah.txt"))
 lda_report_full = load_text_file(os.path.join(REPORTS_DIR, "lda_report.txt"))
 
-# Tampilkan Evaluasi Model Klasifikasi Sentimen
 col1_eval, col2_eval = st.columns(2)
 with col1_eval:
     st.subheader("📉 Model Sebelum: LSTM Sederhana")
     image_path_before = "assets/image_6737bc.png"
     if os.path.exists(image_path_before):
-        st.image(image_path_before, caption="Confusion Matrix Model Dasar", use_container_width=True)
+        st.image(image_path_before, caption="Confusion Matrix Model Dasar", width='stretch')
     else:
         st.warning(f"File gambar tidak ditemukan: '{image_path_before}'.")
-    st.metric("Akurasi", "71.60%")
+    st.metric("Akurasi", "67,7%, ")
     with st.expander("Lihat Detail Analisis (Model Sebelum)"):
         st.code(report_sebelum, language='text')
         st.code(log_sebelum, language='text')
@@ -264,10 +268,10 @@ with col2_eval:
     st.subheader("📈 Model Sesudah: Stacked Bi-LSTM")
     image_path_after = "assets/image_673b45.png"
     if os.path.exists(image_path_after):
-        st.image(image_path_after, caption="Confusion Matrix Model Optimal", use_container_width=True)
+        st.image(image_path_after, caption="Confusion Matrix Model Optimal", width='stretch')
     else:
         st.warning(f"File gambar tidak ditemukan: '{image_path_after}'.")
-    st.metric("Akurasi", "86.56%")
+    st.metric("Akurasi", "83,9%, ")
     with st.expander("Lihat Detail Analisis (Model Sesudah)"):
         st.code(report_sesudah, language='text')
         st.code(log_sesudah, language='text')
@@ -276,28 +280,32 @@ st.markdown("---")
 
 # Tampilkan Analisis Pemodelan Topik (LDA)
 st.header("Analisis Pemodelan Topik (LDA)")
-lda_results = parse_lda_report(lda_report_full)
+_, _, _, _, label_topik = aset_prep
+lda_results = parse_lda_report(lda_report_full, label_topik)
+
 if not lda_results:
     st.error("File laporan `reports/lda_report.txt` tidak ditemukan atau gagal diparsing.")
 else:
-    col1_lda, col2_lda, col3_lda = st.columns(3)
+    col1_lda, col2_lda = st.columns(2)
     col1_lda.metric("Jumlah Topik Optimal", lda_results.get('optimal_topics', 'N/A'))
     col2_lda.metric("Skor Koherensi (C_v)", f"{lda_results.get('coherence_score', 0):.4f}")
-    col3_lda.metric("Hyperparameter (α / η)", f"{lda_results.get('alpha', 'N/A')} / {lda_results.get('eta', 'N/A')}")
     
-    tab1, tab2, tab3 = st.tabs(["Visualisasi LDA (pyLDAvis)", "Detail Topik & Kata Kunci", "Log Proses"])
-    with tab1:
-        st.subheader("Visualisasi Interaktif Model Topik")
-        vis_html_path = "assets/lda_visualization.html"
-        if os.path.exists(vis_html_path):
-            with open(vis_html_path, 'r', encoding='utf-8') as f:
-                html_string = f.read()
-            st.components.v1.html(html_string, width=1300, height=800, scrolling=True)
-            st.success("Visualisasi LDA berhasil dimuat!")
-        else:
-            st.warning(f"File visualisasi tidak ditemukan di `{vis_html_path}`.")
-            st.image("https://raw.githubusercontent.com/bmabey/pyLDAvis/master/notebooks/pyLDAvis_example.png", caption="Contoh visualisasi pyLDAvis.")
-    with tab2:
+    st.markdown("##### Visualisasi Penentuan Jumlah Topik Optimal")
+    st.write(
+        "Grafik di bawah ini menunjukkan skor koherensi dari proses validasi model. "
+        "Puncak tertinggi pada **12 topik** dipilih sebagai konfigurasi model yang paling optimal."
+    )
+    
+    lda_plot_path = "assets/lda_coherence_plot.png" 
+    if os.path.exists(lda_plot_path):
+        st.image(lda_plot_path, caption="Grafik Skor Koherensi (C_v) vs. Jumlah Topik", width='stretch')
+    else:
+        st.warning(f"File gambar '{lda_plot_path}' tidak ditemukan. Pastikan ada di folder 'assets'.")
+
+    # Membuat tab untuk detail topik dan log proses
+    tab_detail, tab_log = st.tabs(["Detail Topik & Kata Kunci", "Log Proses"])
+    
+    with tab_detail:
         st.subheader("Rincian Topik yang Ditemukan")
         if 'topics' in lda_results:
             for topic_name, keywords in lda_results['topics'].items():
@@ -306,6 +314,7 @@ else:
                 st.markdown("---")
         else:
             st.warning("Tidak dapat menampilkan detail topik dari laporan.")
-    with tab3:
+            
+    with tab_log:
         st.subheader("Log Lengkap Proses Pemodelan LDA")
         st.code(lda_report_full, language="text")

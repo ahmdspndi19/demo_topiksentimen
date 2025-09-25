@@ -28,16 +28,19 @@ if df is None or df.empty:
 
 # --- ANALISIS SENTIMEN PER TOPIK ---
 st.header("Distribusi Sentimen per Topik")
-all_topics = df['deskripsi_topik'].unique().tolist()
+# Menggunakan kolom 'Deskripsi Topik'
+all_topics = df['Deskripsi Topik'].unique().tolist()
 selected_topic = st.selectbox("Pilih Topik Utama untuk dianalisis:", options=all_topics)
 
 if selected_topic:
-    df_topic = df[df['deskripsi_topik'] == selected_topic]
+    # Melakukan filter berdasarkan 'Deskripsi Topik'
+    df_topic = df[df['Deskripsi Topik'] == selected_topic]
     
     col1, col2 = st.columns([2, 1])
 
     with col1:
         st.subheader(f"Word Cloud untuk Topik: '{selected_topic}'")
+        # Kolom 'Topik_Gabungan' sudah dibuat di utils.py, jadi ini tidak perlu diubah
         text = " ".join(ulasan for ulasan in df_topic['Topik_Gabungan'].astype(str).dropna())
         
         if text:
@@ -51,15 +54,17 @@ if selected_topic:
 
     with col2:
         st.subheader("Distribusi Sentimen")
-        sentiment_counts_topic = df_topic['sentimen'].value_counts(normalize=True).mul(100).rename('persentase').reset_index()
+        # Menggunakan kolom 'Sentimen'
+        sentiment_counts_topic = df_topic['Sentimen'].value_counts(normalize=True).mul(100).rename('persentase').reset_index()
         fig_pie_topic = px.pie(sentiment_counts_topic,
-                               names='sentimen',
+                               names='Sentimen', # Menggunakan 'Sentimen'
                                values='persentase',
                                title=f'Sentimen di Topik "{selected_topic}"',
-                               color='sentimen',
+                               color='Sentimen', # Menggunakan 'Sentimen'
                                color_discrete_map={'Positif':'#28a745', 'Negatif':'#dc3545', 'Netral':'#ffc107'})
         fig_pie_topic.update_traces(textposition='inside', textinfo='percent+label')
-        st.plotly_chart(fig_pie_topic, use_container_width=True)
+        st.plotly_chart(fig_pie_topic, width='stretch')
 
     st.subheader("Contoh Ulasan Terkait")
-    st.dataframe(df_topic[['ulasan_lengkap', 'sentimen', 'detail_topik']].head(10))
+    # Menampilkan kolom 'Kalimat', 'Sentimen', dan 'Detail Topik'
+    st.dataframe(df_topic[['Kalimat', 'Sentimen', 'Detail Topik']].head(10))
